@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Multiplayer Snake</title>
+<!-- 	<style>
+		canvas{
+			display: block;
+			position: absolute;
+			border: 1px solid #000;
+			margin: auto;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+
+	</style>> -->
+</head>
+<body>
+<canvas id = "ctx" width = 600 height = 600 style ="border:1px solid #000000;"> </canvas>
+<script>
+
+var canvas = document.getElementById("ctx")
+var ctx = canvas.getContext("2d");
+
+//COLORS
+var BLACK = '#B71C1C';
+var WHITE = '#F5F5F5';
+var RED = '#FF5722';
+
+var SnakeColors = ['#0D47A1','#2E7D32']
+
+//Dimensions
+var COLS = 40;
+var ROWS = 40;
+
+var WIDTH =	600;
+var HEIGHT = 600;
+
+var tw = WIDTH/COLS
+var th = HEIGHT/ROWS
+
+//Directions
+var UP = 1;
+var RIGHT = 2;
+var LEFT = 3;
+var DOWN = 4;
+
+//KeyCodes
+var KEY_LEFT = 37, KEY_UP = 38, KEY_RIGHT = 39, KEY_DOWN = 40, SPACE = 32;
+var A = 65, W = 87, D = 68, S = 83, SHIFT = 16;
+
+//Snakes
+var snake,snake1;
+var snakes = []
+
+var boostedMax = 3;						
+var normalMax = 7;
+
+var RefreshInterval = 10;
+var directionUpdated = true;
+var FoodCount = 2;
+
+//ID's
+var EMPTY = 0, SNAKE = 1, FOOD = 2,SNAKE1 = 3;
+
+// Grid
+var grid = []
+
+for (var i = 0; i<COLS; i++){				//Setting up the grid
+		this.grid.push([]);
+		for (var j = 0; j<ROWS; j++){
+			this.grid[i].push(EMPTY);		//Empty Array
+		}
+	}
+
+
+function setGrid(val,x,y) {
+	grid[x][y] = val;
+}
+
+function getGrid(x,y) {
+	return grid[x][y];
+}
+
+function clearGrid() {
+	for (var i = 0; i<COLS; i++){
+		for (var j =0; j<ROWS; j++){
+			grid[i][j] = EMPTY
+		}
+	}
+}
+
+function Snake(x,y,direction,left,up,right,down,boost,id) {
+
+	this.frames = 0;
+	this.maxframes = 4
+	this.x = x;
+	this.y = y;
+	this.body = [];
+	this.head = {};
+	this.direction = direction;
+	this.left = left;
+	this.up = up;
+	this.right = right;
+	this.down = down;
+	this.boost = boost;
+	this.boosted = false;
+	this.id = id;
+
+
+	
+	
+
+
+	this.insert = function(x,y){
+		this.body.unshift({x:x,y:y});
+		this.head = this.body[0];
+		setGrid(this.id,x,y);
+	}
+
+	this.removeLast = function(){
+		var last = this.body.pop();
+		setGrid(EMPTY,last.x,last.y);
+		return last
+	}
+
+	this.update = function() {
+		this.frames++;
+		//Check For Boost
+		if (this.boosted) {
+			this.maxframes = boostedMax
+		} else {
+			this.maxframes = normalMax
+		}
+
+		var nx = this.head.x;
+		var ny = this.head.y;
+
+		//Check for direction
+		if (this.frames >= this.maxframes){
+			this.frames = 0;
+
+			switch (this.direction) {
+				case UP:
+				ny--;
+				break;
+				case DOWN:
+				ny++;
+				break;
+				case RIGHT:
+				nx++;
+				break;
+				case LEFT:
+				nx--;
+				break;
+			}		
+			//Check for remaining in frame
+			if (nx >= COLS || nx < 0 || ny >= ROWS || ny < 0){
+				this.reset();
+				return;
+			}
+
+
+			//Check for Collision
+			switch (getGrid(nx,ny)){
+				case EMPTY:
+				this.removeLast();
+				this.insert(nx,ny);
+				break;
+				case FOOD:
+				setFood()
+				this.insert(nx,ny);
+				break;
+				default:
+				this.reset();
+				break;
+			}
+			directionUpdated = true;
+			
+			//this.removeLast()
+		}
+	}
+
+	this.reset = function() {
+		this.head = {}
+		this.direction = direction;
+		//Removes snake from grid
+		for (i=0; i<this.body.length;i++){
+			setGrid(EMPTY,this.body[i].x,this.body[i].y)
+		}
+		this.body = [];
+		this.insert(x,y);
+	}
+	this.insert(x,y);
+}
+
+function setFood(){
+	randx = Math.floor(Math.random()*COLS);
+	randy = Math.floor(Math.random()*ROWS);
+
+	if (getGrid(randx,randy) != SNAKE && getGrid(randx,randy) != FOOD){
+		setGrid(FOOD,randx,randy)
+	} else {
+		setFood();
+	}
+}
+
+function init(){
+	clearGrid();
+	for (var i =0; i < FoodCount; i++){
+		setFood();
+	}
+}
+
+
+function main(){
+	
+	document.addEventListener("keydown", function(evt){
+		if (directionUpdated) {
+			for (var i = snakes.length - 1; i >= 0; i--) {
+				switch(evt.keyCode) {
+					case snakes[i].down:
+					if (snakes[i].direction != UP){
+						snakes[i].direction = DOWN;
+						directionUpdated = false;
+					}
+					return;
+
+					case snakes[i].up:
+					if (snakes[i].direction != DOWN){
+						snakes[i].direction = UP;
+						directionUpdated = false;
+					}
+					return;
+
+					case snakes[i].left:
+					if (snakes[i].direction != RIGHT){
+						snakes[i].direction = LEFT;
+						directionUpdated = false;
+					}
+					return;
+
+					case snakes[i].right:
+					if (snakes[i].direction != LEFT){
+						snakes[i].direction = RIGHT;
+						directionUpdated = false;
+					}
+					return;
+					
+					case snakes[i].boost:
+					snakes[i].boosted = true;
+					return;
+				}
+			}
+		}
+	});
+
+		document.addEventListener("keyup", function(evt){
+		for (var i = snakes.length - 1; i >= 0; i--) {
+			switch(evt.keyCode) {
+				case snakes[i].boost:
+				snakes[i].boosted = false;
+				return;
+			}
+		}
+	});
+
+	//Initialize the snake
+
+	init();
+	loop();
+}
+
+function loop(){
+	update();
+	draw();
+}
+
+function update(){
+	for (var i = snakes.length - 1; i >= 0; i--) {
+	 snakes[i].update();
+	}
+}
+
+function draw(){
+	for (var i = 0; i<COLS; i++){
+		for (var j =0; j<ROWS; j++){
+			switch(grid[i][j]){
+				case EMPTY:
+				ctx.fillStyle = WHITE;
+				break;
+				case SNAKE:
+				ctx.fillStyle = BLACK;
+				break;
+				case SNAKE1:
+				ctx.fillStyle = SnakeColors[0];
+				break;
+				case FOOD:
+				ctx.fillStyle = RED;
+				break;
+			}
+			ctx.fillRect(i*tw,j*th,tw,th);
+		}
+	}
+}
+
+function restart() {
+	init()
+	for (var i = snakes.length - 1; i >= 0; i--) {
+		snakes[i].reset();
+	}
+}
+
+var snake = new Snake(Math.floor(COLS/2),Math.floor(ROWS/3),RIGHT,KEY_LEFT,KEY_UP,KEY_RIGHT,KEY_DOWN,SPACE,SNAKE);
+var snake1 = new Snake(Math.floor(COLS/2),Math.floor(ROWS*2/3),LEFT,A,W,D,S,SHIFT,SNAKE1);
+
+snakes.push(snake);
+snakes.push(snake1);
+
+main();
+setInterval(loop, RefreshInterval);
+
+</script>
+</body>
+</html>
