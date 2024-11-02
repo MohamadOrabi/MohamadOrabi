@@ -546,9 +546,19 @@
     <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="outlierDetectionGame">
       <div class="w-100">
         <h2 class="mb-5">Just for Fun</h2>
+        <h3 class="mb-5">Outlier Detection Game</h3>
         <p>
-          Identify the satellites with suspicious residuals! Click on the satellites you believe are outliers, then submit your guesses to reveal the truth.
+          Guess the outliers. Here are some good 
         </p>
+        <div>
+          <h4>Key Features</h4>
+          <ul>
+            <li><strong>Realistic Satellite Data</strong>: Positions generated from fetched TLE files with a receiver in San Francisco.</li>
+            <li><strong>Bias Modeling</strong>: Simulates GNSS errors with high-bias outliers.</li>
+            <li><strong>WLS Estimation</strong>: Non-linear least squares with equal-weighted measurements for 3D error.</li>
+            <li><strong>Interactive Residual Analysis</strong>: Color-coded residuals for user-driven outlier detection.</li>
+          </ul>
+        </div>
         
         <div id="skyplotPlotly" style="width: 100%; height: 500px;"></div>
         
