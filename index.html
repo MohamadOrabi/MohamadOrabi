@@ -68,6 +68,9 @@
         <li class="nav-item">
           <a class="nav-link js-scroll-trigger" href="#awards">Achievements</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link js-scroll-trigger" href="#outlierDetectionGame">Just for Fun!</a>
+        </li>
       </ul>
     </div>
   </nav>
@@ -79,10 +82,11 @@
         <h1 class="mb-0">Mohamad
           <span class="text-primary">Orabi</span>
         </h1>
-        <div class="subheading mb-5">Irvine · California · +1 949 245 4310 ·
-          <a href="mailto:mohamad.orabi@lau.edu">orabim@uci.edu</a>
+        <div class="subheading mb-5">San Jose · California · +1 949 245 4310 ·
+          <a href="mailto:mohamad.orabi10@hotmail.com">mohamad.orabi10@hotmail.com</a>
         </div>
-        <p class="lead mb-5">A highly motivated graduate student seeking an opportunity for growth and development. My research interests include opportunistic navigation, software defined receiver design, cellular signals (LTE & 5G), low Earth Orbit satellite signals, multipath mitigation, and deep/reinforcement learning. I invest a lot of my time in acquiring both technical and social skills that have prepared me well for a professional work environment.</p>
+        <p class="lead mb-5">A bit about my life .. Born and raised in Lebanon, my cousin taught me to code in 8th grade and we would have fun developing games together. I started by making python based games, and then moved on to javascript so I can publish them online, and then finally to untiy for real physics and 3d graphics. Fast-forwarding to undergrad, I had a full ride scholarship to the top school in Lebanon, where I did some research in iterative learning control and applying ML for oportunistic navigation. I then moved on to graduate school where I matured my research interests in software defined receiver design, cellular signals (LTE & 5G), Low Earth Orbit (LEO) satellite signals, multipath mitigation, and deep/reinforcement learning. In the last few years, I got my first taste of working with a professional team on a large codebase. My code matured to production level code with automated workflows for code building, testing, and quality checks. I also got my first taste of large scale gnss data, which helped me build an intuition and mature my understanding of the challenges facing accurate navigation.
+        </p>
         <div class="social-icons">
           <a href="https://www.linkedin.com/in/mohamad-orabi-20452a160/">
             <i class="fab fa-linkedin-in"></i>
@@ -273,7 +277,7 @@
         <ul class="fa-ul mb-0">
           <li>
             <i class="fa-li fa fa-check"></i>
-            Tenorflow and Keras</li>
+            Tensorflow and Keras</li>
           <li>
           <li>
             <i class="fa-li fa fa-check"></i>
@@ -391,8 +395,9 @@
         <div class="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
           <div class="resume-content">
             <h4 class="mb-0">
+              <!-- https://github.com/MohamadOrabi/MohamadOrabi/blob/master/videos/Mohamad_Orabi_ION_GNSS_2021_Video.mp4?raw=true -->
 	            <a href="https://github.com/MohamadOrabi/MohamadOrabi/raw/master/videos/Mohamad_Orabi_ION_GNSS_2021_Video.mp4" download="Mohamad_Orabi_ION_GNSS_2021_Video.mp4">
-	            A Machine Learning Multipath Mitigation Approach for Opportunistic Navigation with 5G Signals <br> (Download)
+	            A Machine Learning Multipath Mitigation Approach for Opportunistic Navigation with 5G Signals <br> (Broken Link)
 	        </h4>
 	            </a>
             <div class="subheading mb-0">First Author</div>
@@ -407,7 +412,7 @@
           <div class="resume-content">
             <h4 class="mb-0">
 	            <a href="https://github.com/MohamadOrabi/MohamadOrabi/raw/master/videos/Multiconstellation_LEO_Presentation_Video.mp4">
-	            Opportunistic Navigation with Doppler Measurements from Iridium Next and Orbcomm LEO Satellites <br> (Download)
+	            Opportunistic Navigation with Doppler Measurements from Iridium Next and Orbcomm LEO Satellites <br> (Broken Link)
 	        </h4>
 	            </a>
             <div class="subheading mb-0">First Author</div>
@@ -538,6 +543,59 @@
       </div>
     </section>
 
+    <hr class="m-0">
+    <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="outlierDetectionGame">
+      <div class="w-100">
+        <h2 class="mb-5">Just for Fun</h2>
+        <h3 class="mb-5">Outlier Detection Game (Under development)</h3>
+        <p>
+          Guess the outliers. The game simulates realistic gnss measurements and adds bias with a random probability based on the chosen difficulty.
+        </p>
+        <h4>How to Play:</h4>
+        <ul>
+          <li>Click on the satellites (0 or more) that you suspect are outliers based on the residual information in the plot.</li>
+          <li>Click <strong>Submit Guess</strong> to reveal the truth.</li>
+        </ul>
+      
+        <h4>What You Need to Know:</h4>
+        <ul>
+          <li>Minimum bias value added is 10 meters.</li>
+          <li>Residuals are calculated with respect to the estimated position using the biased measurements.</li>
+          <li>All measurements have equal weights in the estimator.</li>
+        </ul>
+        <!-- <div>
+          <h4>Key Features</h4>
+          <ul>
+            <li><strong>Realistic Satellite Data</strong>: Positions generated from fetched TLE files with a receiver in San Francisco.</li>
+            <li><strong>Bias Modeling</strong>: Simulates GNSS errors with high-bias outliers.</li>
+            <li><strong>WLS Estimation</strong>: Non-linear least squares with equal-weighted measurements for 3D error.</li>
+            <li><strong>Interactive Residual Analysis</strong>: Color-coded residuals for user-driven outlier detection.</li>
+          </ul>
+        </div> -->
+        
+        <div id="skyplotPlotly" style="width: 100%; height: 500px;"></div>
+        
+        <!-- Button wrapper to center buttons -->
+        <div class="button-container mt-3">
+          <button id="submitGuess" class="btn btn-primary mx-2">Submit Guesses</button>
+          <button id="resetGame" class="btn btn-secondary mx-2">Reset</button>
+        </div>
+        <div id="gameOptions">
+          <label for="difficultyLevel">Select Difficulty Level:</label>
+          <select id="difficultyLevel">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+          <br>
+          <label for="clockBias">Include Clock Bias</label>
+          <input type="checkbox" id="clockBias" />
+        </div>
+        
+        <div id="gameResult" class="mt-3"></div>
+      </div>
+    </section>
+
   </div>
 
   <!-- Bootstrap core JavaScript -->
@@ -549,6 +607,17 @@
 
   <!-- Custom scripts for this template -->
   <script src="js/resume.min.js"></script>
+
+  <!-- Include Plotly CDN first -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+  <!-- Add math.js library before your custom JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.1/math.min.js"></script>
+
+  <script src="https://unpkg.com/satellite.js@4.0.0/dist/satellite.min.js"></script>
+
+
+  <script src="js/outlierDetectionGame.js"></script>
 
 </body>
 
