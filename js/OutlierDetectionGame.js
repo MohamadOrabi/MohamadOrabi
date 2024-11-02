@@ -7,12 +7,65 @@ document.addEventListener("DOMContentLoaded", function () {
     let trueClockBias = 0; // Default clock bias value
     let numSatellites = 10;
     let outlierProbability = 0.1;
+    let currentTime;
+
+    // Observer's geodetic coordinates (latitude, longitude, height)
+    const observerGd = {
+    latitude: satellite.degreesToRadians(37.7749),  // Example: San Francisco, CA
+    longitude: satellite.degreesToRadians(-122.4194),
+    height: 0.0  // Height in kilometers
+    };
+
+    // Generate a random date within the past year
+    function getRandomDateWithinYear() {
+        const now = new Date();
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(now.getFullYear() - 1);
+    
+        // Generate a random timestamp between one year ago and now
+        const randomTimestamp = oneYearAgo.getTime() + Math.random() * (now.getTime() - oneYearAgo.getTime());
+        return new Date(randomTimestamp);
+    }
+
+    // Function to fetch TLE data (example using CelesTrak)
+    async function fetchTLEData() {
+    const response = await fetch('https://www.celestrak.com/NORAD/elements/gps-ops.txt');
+    const tleData = await response.text();
+    return tleData;
+    }
+
+    // Function to parse TLE data and compute satellite positions
+    async function computeSatellitePositions() {
+    const tleData = await fetchTLEData();
+    const tleLines = tleData.split('\n').filter(line => line.trim() !== '');
+    const satellites = [];
+
+    for (let i = 0; i < tleLines.length; i += 3) {
+        const tleLine1 = tleLines[i + 1];
+        const tleLine2 = tleLines[i + 2];
+        const satrec = satellite.twoline2satrec(tleLine1, tleLine2);
+        const positionAndVelocity = satellite.propagate(satrec, currentTime);
+        const positionEci = positionAndVelocity.position;
+        const gmst = satellite.gstime(currentTime);
+        const positionGd = satellite.eciToGeodetic(positionEci, gmst);
+        const lookAngles = satellite.ecfToLookAngles(observerGd, satellite.eciToEcf(positionEci, gmst));
+
+        if (lookAngles.elevation > 0) {  // Only include satellites above the horizon
+        satellites.push({
+            azimuth: satellite.radiansToDegrees(lookAngles.azimuth),
+            elevation: satellite.radiansToDegrees(lookAngles.elevation)
+        });
+        }
+    }
+
+    return satellites;
+    }
   
     // Difficulty configurations
     const difficultySettings = {
-      easy: { numSatellites: 10, outlierProbability: 0.1 },
-      medium: { numSatellites: 15, outlierProbability: 0.2 },
-      hard: { numSatellites: 20, outlierProbability: 0.3 }
+      easy: { numSatellites: 5, outlierProbability: 0.3 },
+      medium: { numSatellites: 5, outlierProbability: 0.4 },
+      hard: { numSatellites: 5, outlierProbability: 0.5 }
     };
   
     // Event listener to change difficulty settings
@@ -31,28 +84,32 @@ document.addEventListener("DOMContentLoaded", function () {
       initializeGame(); // Reinitialize game with new clock bias setting
     });
   
-    // Generate satellites with positions, measurements, biases, and clock bias
-    function generateSatellites() {
-      satellites = [];
-      outliers = new Set();
-  
-      for (let i = 0; i < numSatellites; i++) {
-        const azimuth = Math.random() * 360;
-        const elevation = Math.random() * 90;
+    // Call computeSatellitePositions to get realistic satellite positions
+    async function generateSatellites() {
+    satellites = [];
+    outliers = new Set();
+    
+    // Fetch and compute satellite positions from TLE data
+    const realSatellites = await computeSatellitePositions();
+
+    // Limit the number of satellites based on the chosen difficulty
+    realSatellites.slice(0, numSatellites).forEach((sat, i) => {
+        const azimuth = sat.azimuth;
+        const elevation = sat.elevation;
         const isOutlier = Math.random() < outlierProbability;
         const bias = isOutlier ? 10 + Math.random() * 10 : 0;
-  
+
         const distance = 20200 + (Math.random() - 0.5) * 1000;
         const x = truePosition.x + distance * Math.cos(azimuth * Math.PI / 180) * Math.cos(elevation * Math.PI / 180);
         const y = truePosition.y + distance * Math.sin(azimuth * Math.PI / 180) * Math.cos(elevation * Math.PI / 180);
         const z = truePosition.z + distance * Math.sin(elevation * Math.PI / 180);
-  
+
         const trueRange = Math.sqrt((x - truePosition.x) ** 2 + (y - truePosition.y) ** 2 + (z - truePosition.z) ** 2);
         const measurement = trueRange + bias + trueClockBias + (Math.random() - 0.5);
-  
+
         satellites.push({ id: i, x, y, z, azimuth, elevation, measurement, bias, isOutlier });
         if (isOutlier) outliers.add(i);
-      }
+    });
     }
   
     // Function to compute residuals based on WLS estimate, including clock bias
@@ -181,13 +238,14 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   
-    // Initialize the game
-    function initializeGame() {
-      generateSatellites();
-      computeWLS();
-      plotSkyplot();
-      document.getElementById("gameResult").innerHTML = ""; // Clear result text
-      userGuesses.clear();
+    // Update initializeGame to use async/await for generateSatellites
+    async function initializeGame() {
+        currentTime = getRandomDateWithinYear(); // Set a new random date each reset
+        await generateSatellites();
+        computeWLS();
+        plotSkyplot();
+        document.getElementById("gameResult").innerHTML = ""; // Clear result text
+        userGuesses.clear();
     }
   
     // Handle "Submit Guesses" button to show biases
