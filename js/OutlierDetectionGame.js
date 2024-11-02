@@ -117,8 +117,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Set difficulty configurations
     const difficultySettings = {
         easy: { numSatellites: 20, outlierProbability: 0.3 },
-        medium: { numSatellites: 10, outlierProbability: 0.4 },
-        hard: { numSatellites: 7, outlierProbability: 0.5 }
+        medium: { numSatellites: 10, outlierProbability: 0.35 },
+        hard: { numSatellites: 7, outlierProbability: 0.4 }
     };
 
     // Difficulty level change event
