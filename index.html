@@ -547,11 +547,23 @@
     <section class="resume-section p-3 p-lg-5 d-flex align-items-center" id="outlierDetectionGame">
       <div class="w-100">
         <h2 class="mb-5">Just for Fun</h2>
-        <h3 class="mb-5">Outlier Detection Game</h3>
+        <h3 class="mb-5">Outlier Detection Game (Under development)</h3>
         <p>
-          Guess the outliers. Here are some good 
+          Guess the outliers. The game simulates realistic gnss measurements and adds bias with a random probability based on the chosen difficulty.
         </p>
-        <div>
+        <h4>How to Play:</h4>
+        <ul>
+          <li>Click on the satellites (0 or more) that you suspect are outliers based on the residual information in the plot.</li>
+          <li>Click <strong>Submit Guess</strong> to reveal the truth.</li>
+        </ul>
+      
+        <h4>What You Need to Know:</h4>
+        <ul>
+          <li>Minimum bias value added is 10 meters.</li>
+          <li>Residuals are calculated with respect to the estimated position using the biased measurements.</li>
+          <li>All measurements have equal weights in the estimator.</li>
+        </ul>
+        <!-- <div>
           <h4>Key Features</h4>
           <ul>
             <li><strong>Realistic Satellite Data</strong>: Positions generated from fetched TLE files with a receiver in San Francisco.</li>
@@ -559,7 +571,7 @@
             <li><strong>WLS Estimation</strong>: Non-linear least squares with equal-weighted measurements for 3D error.</li>
             <li><strong>Interactive Residual Analysis</strong>: Color-coded residuals for user-driven outlier detection.</li>
           </ul>
-        </div>
+        </div> -->
         
         <div id="skyplotPlotly" style="width: 100%; height: 500px;"></div>
         
