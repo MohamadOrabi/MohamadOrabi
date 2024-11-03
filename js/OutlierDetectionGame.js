@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function computeWLS() {
         const initialGuess = { x: trueReceiverPosition.x, y: trueReceiverPosition.y, z: trueReceiverPosition.z, cb: 0 };
         const estimatedPosition = weightedLeastSquares(satellites, initialGuess);
-
+    
         // Calculate residuals for each satellite
         satellites.forEach(sat => {
             const estimatedRange = Math.sqrt(
@@ -191,22 +191,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 (sat.y - estimatedPosition.y) ** 2 +
                 (sat.z - estimatedPosition.z) ** 2
             ) + estimatedPosition.cb;
-            sat.residual = sat.measurement - estimatedRange; 
-            console.log("\nEstimated Range: ", estimatedRange)
-            console.log("True Range: ", sat.measurement)
-            console.log("Diff: ", sat.residual)
+            sat.residual = sat.measurement - estimatedRange;
         });
-
-        // Compute 3D position error (Euclidean distance)
+    
+        // Calculate 3D position error
         const positionError3D = Math.sqrt(
-            (estimatedPosition.x - trueReceiverPosition.x) ** 2 +
-            (estimatedPosition.y - trueReceiverPosition.y) ** 2 +
-            (estimatedPosition.z - trueReceiverPosition.z) ** 2
+            (trueReceiverPosition.x - estimatedPosition.x) ** 2 +
+            (trueReceiverPosition.y - estimatedPosition.y) ** 2 +
+            (trueReceiverPosition.z - estimatedPosition.z) ** 2
         );
-
-        // Output 3D position error in console and UI
-        console.log(`3D Position Error: ${positionError3D.toFixed(2)} meters`);
-        document.getElementById("gameResult").innerHTML += `<p>3D Position Error: ${positionError3D.toFixed(2)} meters</p>`;
+    
+        // Calculate 4D position error, including clock bias
+        const positionError4D = Math.sqrt(positionError3D ** 2 + estimatedPosition.cb ** 2);
+    
+        return { positionError3D, positionError4D };
     }
 
     // Weighted Least Squares (WLS) with clock bias estimation
@@ -347,16 +345,22 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("submitGuess").addEventListener("click", () => {
         let correct = 0;
         const feedbackText = [];
-
+        const { positionError3D, positionError4D } = computeWLS(); // Get position errors
+    
         userGuesses.forEach(id => {
             if (outliers.has(id)) correct++;
             feedbackText.push(`Satellite ${id}: Bias = ${satellites[id].bias.toFixed(2)} meters`);
         });
-
-        const resultText = `You identified ${correct} out of ${outliers.size} outliers correctly.`;
+    
+        const resultText = `<u>Estimated Position Error:</u><br>
+            3D Position Error: ${positionError3D.toFixed(2)} meters<br>
+            4D Position Error (including clock bias): ${positionError4D.toFixed(2)} meters
+            You identified ${correct} out of ${outliers.size} outliers correctly.<br>
+        `;
+    
         document.getElementById("gameResult").innerHTML = `<p>${resultText}</p><p>${feedbackText.join("<br>")}</p>`;
-
-        plotSkyplot(true);
+    
+        plotSkyplot(true); // Replot to show biases
     });
 
     // Initial game setup
