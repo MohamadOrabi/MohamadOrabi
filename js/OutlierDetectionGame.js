@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const e2 = f * (2 - f); // Square of eccentricity
 
     // Define geodetic coordinates for the receiver
-    const lat = 37.7749; // Latitude in degrees
+    const lat = 37.7749; // Latitude in degrees (San Francisco)
     const lon = -122.4194; // Longitude in degrees
     const alt = 0; // Altitude in meters
 
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const trueReceiverPosition = geodeticToECEF(lat, lon, alt);
 
     // Generate a random date within the past year
-    function getRandomDateWithinYear() {
+    function getRandomDateWithinWeek() {
         const now = new Date();
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(now.getDate() - 1); // Set to one week (7 days) ago
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return new Date(randomTimestamp);
     }
 
-    // Function to fetch TLE data
+    // Fetch the latest GPS TLE data
     async function fetchTLEData() {
         const response = await fetch('https://www.celestrak.com/NORAD/elements/gps-ops.txt');
         const tleData = await response.text();
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return tleData;
     }
 
-    // Function to parse TLE data and compute satellite positions relative to trueReceiverPosition
+    // Parse TLE data and compute satellite positions relative to trueReceiverPosition
     async function computeSatellitePositions() {
         const tleData = await fetchTLEData();
         const tleLines = tleData.split('\n').filter(line => line.trim() !== '');
@@ -92,10 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const azimuth = satellite.radiansToDegrees(lookAngles.azimuth);
             const elevation = satellite.radiansToDegrees(lookAngles.elevation);
     
-            // Log each satellite's computed azimuth and elevation for debugging
-            console.log(`Satellite ${i / 3} - Azimuth: ${azimuth.toFixed(2)}, Elevation: ${elevation.toFixed(2)}`);
-    
-            // Add satellite if it’s above the horizon
             if (elevation > 0) {
                 satellitePositions.push({
                     azimuth,
@@ -133,7 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Clock bias checkbox event
     document.getElementById("clockBias").addEventListener("change", function (event) {
         includeClockBias = event.target.checked;
-        trueClockBias = includeClockBias ? 5 : 0;
         initializeGame(); 
     });
 
@@ -185,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to compute residuals based on WLS estimate
     function computeWLS() {
-        const initialGuess = { x: 900, y: 900, z: 900, cb: 0 }; 
+        const initialGuess = { x: trueReceiverPosition.x, y: trueReceiverPosition.y, z: trueReceiverPosition.z, cb: 0 };
         const estimatedPosition = weightedLeastSquares(satellites, initialGuess);
 
         satellites.forEach(sat => {
@@ -210,7 +205,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const rangeEstimate = Math.sqrt((sat.x - x) ** 2 + (sat.y - y) ** 2 + (sat.z - z) ** 2) + cb;
                 const residual = sat.measurement - rangeEstimate;
     
-                // Set up row for H matrix and residual vector
                 const row = [(x - sat.x) / rangeEstimate, (y - sat.y) / rangeEstimate, (z - sat.z) / rangeEstimate];
                 if (includeClockBias) row.push(1); // Add column for clock bias if applicable
                 H.push(row);
@@ -223,17 +217,15 @@ document.addEventListener("DOMContentLoaded", function () {
     
             try {
                 const Ht = math.transpose(H);
-                const HtH = math.add(math.multiply(Ht, H), math.multiply(math.identity(H.size()[1]), 1e-6)); // Regularization
-                const HtH_inv = math.inv(HtH); // Inverse of H^T * H
-                const delta = math.multiply(HtH_inv, Ht, deltaR); // Compute the update step
-    
-                // Update estimates
+                const HtH = math.multiply(Ht, H); // No regularization
+                const HtH_inv = math.inv(HtH); 
+                const delta = math.multiply(HtH_inv, Ht, deltaR); 
+
                 x += delta.get([0]);
                 y += delta.get([1]);
                 z += delta.get([2]);
                 if (includeClockBias) cb += delta.get([3]);
     
-                // Check for convergence
                 if (math.norm(delta) < tolerance) break;
             } catch (error) {
                 console.error("Matrix inversion failed:", error);
