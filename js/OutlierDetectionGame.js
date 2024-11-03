@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const trueReceiverPosition = geodeticToECEF(lat, lon, alt);
 
     // Generate a random date within the past year
-    function getRandomDateWithinWeek() {
+    function getRandomDateWithinDay() {
         const now = new Date();
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(now.getDate() - 1); // Set to one week (7 days) ago
@@ -183,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const initialGuess = { x: trueReceiverPosition.x, y: trueReceiverPosition.y, z: trueReceiverPosition.z, cb: 0 };
         const estimatedPosition = weightedLeastSquares(satellites, initialGuess);
 
+        // Calculate residuals for each satellite
         satellites.forEach(sat => {
             const estimatedRange = Math.sqrt(
                 (sat.x - estimatedPosition.x) ** 2 +
@@ -191,10 +192,21 @@ document.addEventListener("DOMContentLoaded", function () {
             ) + estimatedPosition.cb;
             sat.residual = sat.measurement - estimatedRange; 
         });
+
+        // Compute 3D position error (Euclidean distance)
+        const positionError3D = Math.sqrt(
+            (estimatedPosition.x - trueReceiverPosition.x) ** 2 +
+            (estimatedPosition.y - trueReceiverPosition.y) ** 2 +
+            (estimatedPosition.z - trueReceiverPosition.z) ** 2
+        );
+
+        // Output 3D position error in console and UI
+        console.log(`3D Position Error: ${positionError3D.toFixed(2)} meters`);
+        document.getElementById("gameResult").innerHTML += `<p>3D Position Error: ${positionError3D.toFixed(2)} meters</p>`;
     }
 
     // Weighted Least Squares (WLS) with clock bias estimation
-    function weightedLeastSquares(satellites, initialGuess, maxIterations = 10, tolerance = 1e-6) {
+    function weightedLeastSquares(satellites, initialGuess, maxIterations = 10, tolerance = 1e-12) {
         let { x, y, z, cb } = initialGuess;
     
         for (let iter = 0; iter < maxIterations; iter++) {
@@ -225,7 +237,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 y += delta.get([1]);
                 z += delta.get([2]);
                 if (includeClockBias) cb += delta.get([3]);
-    
+                
+                console.log("WLS error norm: ", math.norm(delta))
+                console.log("clock bias estimted: ", cb)
                 if (math.norm(delta) < tolerance) break;
             } catch (error) {
                 console.error("Matrix inversion failed:", error);
@@ -237,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initialize the game with a new random date and settings
     async function initializeGame() {
-        currentTime = getRandomDateWithinYear(); // Set a new random date each reset
+        currentTime = getRandomDateWithinDay(); // Set a new random date each reset
         await generateSatellites(); // Populate satellites array
         if (satellites.length === 0) {
             console.error("No satellites generated. Check satellite data or horizon filtering.");
@@ -315,7 +329,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 const updatedColors = satellites.map(sat =>
-                    userGuesses.has(sat.id) ? 'blue' : sat.residual
+                    userGuesses.has(sat.id) ? 'lime' : sat.residual
                 );
 
                 Plotly.restyle('skyplotPlotly', {
