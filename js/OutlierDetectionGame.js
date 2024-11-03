@@ -21,13 +21,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Convert geodetic coordinates to ECEF
     function geodeticToECEF(lat, lon, alt) {
-        const latRad = lat * Math.PI / 180;
-        const lonRad = lon * Math.PI / 180;
-        const N = a / Math.sqrt(1 - e2 * Math.sin(latRad) ** 2);
-        const x = (N + alt) * Math.cos(latRad) * Math.cos(lonRad);
-        const y = (N + alt) * Math.cos(latRad) * Math.sin(lonRad);
-        const z = ((1 - e2) * N + alt) * Math.sin(latRad);
-        return { x, y, z };
+        const observerGd = {
+            latitude: satellite.degreesToRadians(lat),
+            longitude: satellite.degreesToRadians(lon),
+            height: alt / 1000 // satellite.js expects height in kilometers
+        };
+        const positionEcf = satellite.geodeticToEcf(observerGd);
+        
+        return { x: positionEcf.x, y: positionEcf.y, z: positionEcf.z };
     }
 
     // Set the true receiver position in ECEF
@@ -112,9 +113,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Set difficulty configurations
     const difficultySettings = {
-        easy: { numSatellites: 20, outlierProbability: 0.3 },
-        medium: { numSatellites: 10, outlierProbability: 0.35 },
-        hard: { numSatellites: 7, outlierProbability: 0.4 }
+        easy: { numSatellites: 20, outlierProbability: 0.2 },
+        medium: { numSatellites: 15, outlierProbability: 0.3 },
+        hard: { numSatellites: 10, outlierProbability: 0.4 }
     };
 
     // Difficulty level change event
