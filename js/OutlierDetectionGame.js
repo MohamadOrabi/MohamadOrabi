@@ -353,10 +353,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     
         const resultText = `<u>Estimated Position Error:</u><br>
-            3D Position Error: ${positionError3D.toFixed(2)} meters<br>
-            4D Position Error (including clock bias): ${positionError4D.toFixed(2)} meters
-            You identified ${correct} out of ${outliers.size} outliers correctly.<br>
-        `;
+        3D Position Error: ${positionError3D.toFixed(2)} meters<br>
+        4D Position Error (including clock bias): ${positionError4D.toFixed(2)} meters<br>
+        You identified ${correct} out of ${outliers.size} outliers correctly.<br>
+    `;
     
         document.getElementById("gameResult").innerHTML = `<p>${resultText}</p><p>${feedbackText.join("<br>")}</p>`;
     
