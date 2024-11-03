@@ -191,6 +191,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 (sat.z - estimatedPosition.z) ** 2
             ) + estimatedPosition.cb;
             sat.residual = sat.measurement - estimatedRange; 
+            console.log("\nEstimated Range: ", estimatedRange)
+            console.log("True Range: ", sat.measurement)
+            console.log("Diff: ", sat.residual)
         });
 
         // Compute 3D position error (Euclidean distance)
