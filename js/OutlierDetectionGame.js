@@ -352,10 +352,10 @@ document.addEventListener("DOMContentLoaded", function () {
             feedbackText.push(`Satellite ${id}: Bias = ${satellites[id].bias.toFixed(2)} meters`);
         });
     
-        const resultText = `<u>Estimated Position Error:</u><br>
+        const resultText = `You identified <u>${correct} out of ${outliers.size} outliers</u> correctly.<br>
+        <u>Estimated Position Error:</u><br>
         3D Position Error: ${positionError3D.toFixed(2)} meters<br>
-        4D Position Error (including clock bias): ${positionError4D.toFixed(2)} meters<br>
-        You identified <u>${correct} out of ${outliers.size} outliers</u> correctly.<br>
+        4D Position and Time Error: ${positionError4D.toFixed(2)} meters<br>
     `;
     
         document.getElementById("gameResult").innerHTML = `<p>${resultText}</p><p>${feedbackText.join("<br>")}</p>`;
