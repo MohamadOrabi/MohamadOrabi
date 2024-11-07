@@ -298,8 +298,8 @@ document.addEventListener("DOMContentLoaded", function () {
             marker: {
                 color: colors,
                 colorscale: 'RdYlGn',
-                cmin: Math.min(...colors),
-                cmax: Math.max(...colors),
+                cmin: -20,
+                cmax: 20,
                 size: sizes,
                 opacity: 0.8,
                 line: { color: 'black', width: 1 },
