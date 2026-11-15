@@ -34,35 +34,64 @@ document.addEventListener("DOMContentLoaded", function () {
     // Set the true receiver position in ECEF
     const trueReceiverPosition = geodeticToECEF(lat, lon, alt);
 
-    // Generate a random date within the past year
-    function getRandomDateWithinDay() {
-        const now = new Date();
-        const oneWeekAgo = new Date();
-        oneWeekAgo.setDate(now.getDate() - 1); // Set to one week (7 days) ago
-    
-        // Generate a random timestamp between one week ago and now
-        const randomTimestamp = oneWeekAgo.getTime() + Math.random() * (now.getTime() - oneWeekAgo.getTime());
-        return new Date(randomTimestamp);
+    // Local TLE file (a frozen snapshot of Celestrak's GPS operational set)
+    const TLE_URL = 'data/gps-ops.tle';
+    // Pick the game time within +/- this many hours of the TLE epoch, so SGP4 stays accurate
+    const TLE_WINDOW_HOURS = 12;
+    let satrecsPromise = null;
+    let tleEpoch = null;
+
+    function showError(message) {
+        console.error(message);
+        const el = document.getElementById("gameResult");
+        if (el) el.innerHTML = `<p style="color:#c00">${message}</p>`;
     }
 
-    // Fetch the latest GPS TLE data
+    // Random date within +/- TLE_WINDOW_HOURS of the TLE set's own epoch
+    function getRandomDateNearEpoch(epoch) {
+        const span = TLE_WINDOW_HOURS * 3600 * 1000;
+        return new Date(epoch.getTime() + (Math.random() * 2 - 1) * span);
+    }
+
+    // Load the bundled TLE file
     async function fetchTLEData() {
-        const response = await fetch('https://www.celestrak.com/NORAD/elements/gps-ops.txt');
-        const tleData = await response.text();
-        console.log("TLE data len: ", tleData.length)
-        return tleData;
+        const response = await fetch(TLE_URL);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status} while loading ${TLE_URL}`);
+        }
+        return response.text();
+    }
+
+    // Load, parse (name/line1/line2 triplets) and cache satrecs; sets tleEpoch
+    function loadSatrecs() {
+        if (!satrecsPromise) {
+            satrecsPromise = (async () => {
+                const tleData = await fetchTLEData();
+                const lines = tleData.split(/\r?\n/).map(l => l.trim()).filter(l => l !== '');
+                const recs = [];
+                for (let i = 0; i + 2 < lines.length; i += 3) {
+                    if (!lines[i + 1].startsWith('1 ') || !lines[i + 2].startsWith('2 ')) {
+                        throw new Error(`Malformed TLE entry near "${lines[i]}"`);
+                    }
+                    recs.push(satellite.twoline2satrec(lines[i + 1], lines[i + 2]));
+                }
+                if (recs.length === 0) throw new Error(`No TLE entries found in ${TLE_URL}`);
+                // jdsatepoch is a Julian date; 2440587.5 is the Unix epoch
+                tleEpoch = new Date((recs[0].jdsatepoch - 2440587.5) * 86400000);
+                return recs;
+            })();
+            satrecsPromise.catch(() => { satrecsPromise = null; });
+        }
+        return satrecsPromise;
     }
 
     // Parse TLE data and compute satellite positions relative to trueReceiverPosition
     async function computeSatellitePositions() {
-        const tleData = await fetchTLEData();
-        const tleLines = tleData.split('\n').filter(line => line.trim() !== '');
+        const satrecs = await loadSatrecs();
         const satellitePositions = [];
     
-        for (let i = 0; i < tleLines.length; i += 3) {
-            const tleLine1 = tleLines[i + 1];
-            const tleLine2 = tleLines[i + 2];
-            const satrec = satellite.twoline2satrec(tleLine1, tleLine2);
+        for (let i = 0; i < satrecs.length; i++) {
+            const satrec = satrecs[i];
             const positionAndVelocity = satellite.propagate(satrec, currentTime);
     
             if (!positionAndVelocity.position) {
@@ -253,8 +282,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initialize the game with a new random date and settings
     async function initializeGame() {
-        currentTime = getRandomDateWithinDay(); // Set a new random date each reset
-        await generateSatellites(); // Populate satellites array
+        try {
+            await loadSatrecs();
+            currentTime = getRandomDateNearEpoch(tleEpoch); // Random time near the TLE epoch
+            await generateSatellites(); // Populate satellites array
+        } catch (error) {
+            showError(`Could not load satellite ephemeris (${TLE_URL}): ${error.message}`);
+            return;
+        }
         if (satellites.length === 0) {
             console.error("No satellites generated. Check satellite data or horizon filtering.");
             return;
