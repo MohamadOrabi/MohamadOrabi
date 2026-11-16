@@ -6,11 +6,15 @@
   color: $primary !important;
 }
 
+.resume-date .text-primary {
+  color: $primary-text !important;
+}
+
 a {
-  color: $primary;
+  color: $primary-text;
   &:hover,
   &:focus,
   &:active {
-    color: darken($primary, 15%);
+    color: $primary-text-hover;
   }
 }

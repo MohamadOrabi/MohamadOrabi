@@ -37,3 +37,8 @@ $dark:          $gray-800 !default;
 // Page Variables
 
 $sidebar-base-width: 17rem;
+
+// Rust darkened for text on white (AA contrast); the sidebar keeps $primary
+$primary-text: #A9502E;
+$primary-text-hover: #8A4125;
+$primary-light: #d48a6e;

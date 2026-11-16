@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showError(message) {
         console.error(message);
+        const placeholder = document.querySelector('#skyplotPlotly .plot-loading');
+        if (placeholder) placeholder.remove();
         const el = document.getElementById("gameResult");
         if (el) el.innerHTML = `<p style="color:#c00">${message}</p>`;
     }
@@ -315,9 +317,38 @@ document.addEventListener("DOMContentLoaded", function () {
         initializeGame();
     });
 
+    // Site palette for the plot
+    const PLOT_FONT = { family: 'Muli, -apple-system, "Segoe UI", Roboto, sans-serif', color: '#495057' };
+    const RESIDUAL_COLORSCALE = [
+        [0, '#2B4C6F'],    // negative residual: deep slate blue
+        [0.5, '#EFE9E4'],  // zero: warm light grey
+        [0.8, '#BD5D38'],  // positive residual: sidebar rust
+        [1, '#7A2E12']     // extreme positive: deep rust
+    ];
+    const HALO_EXTRA_SIZE = 14;
+
+    function removePlotPlaceholder() {
+        const placeholder = document.querySelector('#skyplotPlotly .plot-loading');
+        if (placeholder) placeholder.remove();
+    }
+
+    // Trace data for the "selected" halo drawn behind the chosen satellites
+    function haloData(sizes) {
+        const selected = satellites.map((sat, i) => ({ sat, size: sizes[i] })).filter(d => userGuesses.has(d.sat.id));
+        return {
+            r: selected.map(d => 90 - d.sat.elevation),
+            theta: selected.map(d => d.sat.azimuth),
+            size: selected.map(d => d.size + HALO_EXTRA_SIZE)
+        };
+    }
+
     // Plot satellites on skyplot with coloring by residuals and optional size adjustment based on bias
     function plotSkyplot(showBiasSize = false) {
-        const colors = satellites.map(sat => sat.residual);
+        const container = document.getElementById('skyplotPlotly');
+        removePlotPlaceholder();
+        const width = container.clientWidth || 640;
+        const narrow = width < 480;
+
         const sizes = satellites.map(sat => showBiasSize ? Math.min(10 + sat.bias * 2, 30) : 10);
         const hoverInfo = satellites.map(sat =>
             showBiasSize
@@ -325,35 +356,64 @@ document.addEventListener("DOMContentLoaded", function () {
                 : `ID: ${sat.id}<br>Residual: ${sat.residual.toFixed(2)} meters`
         );
 
+        const colorbar = {
+            title: { text: 'Residual (m)', font: PLOT_FONT },
+            tickfont: PLOT_FONT,
+            thickness: 14,
+            outlinewidth: 0
+        };
+        if (narrow) {
+            // Slimmer colourbar so the polar plot keeps most of a phone-width screen
+            Object.assign(colorbar, { thickness: 10, len: 0.7, x: 0.88, xanchor: 'left', tickfont: Object.assign({}, PLOT_FONT, { size: 10 }) });
+        }
+
+        // Trace 0: selection halo (a rust ring with a dark edge, drawn behind the satellites)
+        // Trace 1: the satellites, coloured by residual
+        const halo = haloData(sizes);
         const data = [{
+            type: 'scatterpolar',
+            mode: 'markers',
+            r: halo.r,
+            theta: halo.theta,
+            marker: { color: '#BD5D38', size: halo.size, line: { color: '#212529', width: 2 } },
+            hoverinfo: 'skip',
+            showlegend: false
+        }, {
             type: 'scatterpolar',
             mode: 'markers',
             r: satellites.map(sat => 90 - sat.elevation),
             theta: satellites.map(sat => sat.azimuth),
             marker: {
-                color: colors,
-                colorscale: 'RdYlGn',
+                color: satellites.map(sat => sat.residual),
+                colorscale: RESIDUAL_COLORSCALE,
                 cmin: -20,
                 cmax: 20,
                 size: sizes,
-                opacity: 0.8,
-                line: { color: 'black', width: 1 },
-                colorbar: { title: "Residual (m)" }
+                opacity: 0.95,
+                line: { color: '#343a40', width: 1 },
+                colorbar
             },
             text: hoverInfo,
             hoverinfo: 'text'
         }];
 
+        const axisStyle = { gridcolor: '#D9D2CB', linecolor: '#D9D2CB', tickfont: PLOT_FONT };
         const layout = {
             polar: {
-                radialaxis: { visible: true, range: [90, 0] },
-                angularaxis: { direction: "clockwise" }
+                bgcolor: 'rgba(0,0,0,0)',
+                domain: narrow ? { x: [0.1, 0.84], y: [0, 1] } : { x: [0, 1], y: [0, 1] },
+                radialaxis: Object.assign({ visible: true, range: [90, 0] }, axisStyle),
+                angularaxis: Object.assign({ direction: 'clockwise' }, axisStyle)
             },
             showlegend: false,
-            title: { text: "Outlier Detection Skyplot", font: { size: 20 } }
+            font: PLOT_FONT,
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            height: narrow ? Math.max(300, width - 20) : Math.min(520, Math.max(380, width)),
+            margin: narrow ? { t: 20, r: 40, b: 20, l: 10 } : { t: 30, r: 20, b: 30, l: 20 }
         };
 
-        Plotly.newPlot('skyplotPlotly', data, layout).then(() => {
+        Plotly.newPlot('skyplotPlotly', data, layout, { responsive: true, displayModeBar: false }).then(() => {
             const skyplotElement = document.getElementById('skyplotPlotly');
             skyplotElement.on('plotly_click', function(event) {
                 const point = event.points[0];
@@ -365,13 +425,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     userGuesses.add(satelliteId);
                 }
 
-                const updatedColors = satellites.map(sat =>
-                    userGuesses.has(sat.id) ? 'lime' : sat.residual
-                );
-
+                const updatedHalo = haloData(skyplotElement.data[1].marker.size);
                 Plotly.restyle('skyplotPlotly', {
-                    'marker.color': [updatedColors]
-                });
+                    r: [updatedHalo.r],
+                    theta: [updatedHalo.theta],
+                    'marker.size': [updatedHalo.size]
+                }, [0]);
             });
         });
     }
@@ -398,6 +457,12 @@ document.addEventListener("DOMContentLoaded", function () {
         plotSkyplot(true); // Replot to show biases
     });
 
-    // Initial game setup
+    // Initial game setup: start from whatever difficulty the select currently shows
+    const initialSettings = difficultySettings[document.getElementById("difficultyLevel").value];
+    if (initialSettings) {
+        numSatellites = initialSettings.numSatellites;
+        outlierProbability = initialSettings.outlierProbability;
+    }
+    includeClockBias = document.getElementById("clockBias").checked;
     initializeGame();
 });

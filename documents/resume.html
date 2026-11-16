@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mohamad Orabi - Resume</title>
+<style>
+@page { size: Letter; margin: 0.4in 0.45in 0.35in 0.45in; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; font-family: Cambria, Georgia, serif; font-size: 9pt; line-height: 1.12; color: #000; font-variant-numeric: lining-nums; }
+h1 { margin: 0 0 4pt; text-align: center; font-size: 16pt; line-height: 1.2; font-weight: bold; letter-spacing: 1.2pt; color: #353744; }
+.contact { text-align: center; margin: 0 0 11pt; }
+.contact a { color: #0000ee; text-decoration: underline; }
+h2 { margin: 0 0 5pt; padding-bottom: 2pt; font-size: 11pt; line-height: 1.25; font-weight: bold; text-transform: uppercase; color: #2E74B5; border-bottom: 0.75pt solid #444; break-after: avoid; }
+section { margin: 0 0 7pt; }
+
+.pub, li, .edu-item { break-inside: avoid; }
+.row, .title, h3 { break-after: avoid; }
+.entry { margin: 0 0 7pt; }
+.entry:last-child { margin-bottom: 0; }
+.row { display: flex; justify-content: space-between; align-items: baseline; }
+.row .org { font-weight: bold; }
+.row .org i { font-weight: normal; }
+.row .date { white-space: nowrap; padding-left: 12pt; }
+.title { font-weight: bold; font-style: italic; text-decoration: underline; }
+p { margin: 0; }
+ul { margin: 0; padding: 0 0 0 18pt; list-style: disc; }
+li { margin: 0; padding-left: 0; }
+li::marker { font-size: 10pt; }
+a { color: #0563C1; text-decoration: underline; }
+.edu .org { color: #353744; }
+.edu .degree { margin-top: 5pt; }
+.edu .school + .degree { margin-top: 5pt; }
+.edu-item + .edu-item { margin-top: 5pt; }
+.sub { margin: 0 0 5pt; }
+.sub h3 { margin: 0; font-size: 10pt; font-weight: bold; }
+.intro { margin-bottom: 5pt; }
+.pubs li { break-inside: avoid; }
+.pubs i { display: block; }
+.grp { margin-top: 3pt; }
+.pagebreak { break-before: page; }
+</style>
+</head>
+<body>
+<h1>Mohamad Orabi</h1>
+<div class="contact">+1 949 245 4310 | San Jose, California, United States | mohamad.orabi10@hotmail.com | &nbsp;<a href="http://www.orabim.com">http://www.orabim.com</a></div>
+
+<section id="work">
+<h2>Work Experience</h2>
+
+<div class="entry">
+<div class="row"><span class="org">Apple</span><span class="date">Feb 2025 – Present</span></div>
+<div class="title">Software Engineering Systems - Location &amp; Sensing Technologies</div>
+<p>Owned the <b>full lifecycle</b> of an <b>on-device ML model</b> that predicts <b>measurement errors</b>, improving <b>tail positioning error (HE95)</b> by <b>60%</b> with <b>barely any impact on memory or battery life</b> and helping beat competitors for <b>best-in-class fitness performance</b>. The worst 75% of data collections now beat what used to be the best 25%. This work earned me the <b>special award bonus</b> at my end-of-year review. My activities included but were not limited to:</p>
+<ul>
+  <li>Iterating on <b>feature preprocessing</b>, <b>cost function</b>, <b>architecture</b>, <b>system integration</b>, and <b>resource optimization</b>.</li>
+  <li>Coordinating <b>data collection campaigns</b> with the test team.</li>
+  <li>Working with the <b>firmware team</b> to find useful signals and pass them up the stack as <b>model features</b>.</li>
+  <li>Building <b>cloud training and evaluation infrastructure</b> that plugs into the existing <b>regression system</b>, from training all the way to final <b>positioning KPIs</b>.</li>
+  <li>Running <b>massive experiments</b> to guide every design decision.</li>
+</ul>
+<p class="grp">Revamped the <b>ephemeris monitoring system</b> and built an <b>AI Slack bot</b> on top of it. Test failures went from going <b>unnoticed for months</b> to being <b>noticed within 15 minutes</b>, with <b>95% handled the same day</b>:</p>
+<ul>
+  <li>The bot sends <b>daily digests</b> of new, ongoing, and cleared issues.</li>
+  <li>It also sends <b>real-time alerts</b> for test failures, with an initial <b>triage report</b> and recommended next steps.</li>
+  <li>Drastically increased <b>test coverage</b> and created a <b>warning class</b> so we can catch fires before they start.</li>
+</ul>
+<p class="grp">Championed <b>agentic AI</b> workflows, developing several <b>skills</b> that were <b>widely adopted by my team</b>:</p>
+<ul>
+  <li>A <b>job submission</b> skill built by sniffing the POST commands from the web UI, turning a UI-based workflow into an <b>agentic</b> one and largely boosting productivity for colleagues.</li>
+  <li>A skill that uses the math animation library (<b>manim</b>) to create <b>3Blue1Brown-style explainer videos</b> that help users digest complex PRs for algorithm changes.</li>
+  <li>A skill for <b>LLDB debugger</b>-driven triage and investigation.</li>
+  <li>Contributed to the <b>agentic bug-triage system</b> by fixing a <b>validation data leak</b> and mining historical bugs to extract <b>triage skills</b>.</li>
+  <li>Became a <b>GenAI ambassador</b> after being nominated for Apple's <b>agentic AI coding course</b>.</li>
+</ul>
+</div>
+
+<div class="entry">
+<div class="row"><span class="org">OneNav, inc <span style="font-weight:normal">–</span> <i>San Jose, California</i></span><span class="date">Jan 2022 – Nov 2024</span></div>
+<div class="title">Navigation/ML Engineer</div>
+<p>Optimized various blocks of the <b>Java</b>-based Positioning Engine/Manager to enhance its performance across real-world scenarios (cold start, assisted, urban canyon, foliage, parking garage, tunnel). My activities included, but were not limited to:</p>
+<ul>
+<li>Conducting research and development on <b>outlier detection</b> methods such as <b>RAIM</b>, <b>RANSAC</b>, and <b>UKF innovations</b>.</li>
+<li>Researching and developing <b>ML models</b> for <b>measurement classification</b> and <b>bias estimation</b>.</li>
+<li>Estimating and characterizing <b>measurement errors</b>.</li>
+<li><b>Root-causing</b> and resolving <b>urgent issues</b> impacting receiver performance.</li>
+<li>Developing <b>interactive dashboards</b> for <b>massive data analysis</b> to support and guide R&amp;D.</li>
+<li>Contributing to <b>analysis, debugging, and regression tools</b>.</li>
+</ul>
+</div>
+
+<div class="entry">
+<div class="row"><span class="org">ASPIN Lab - University of California Irvine <span style="font-weight:normal">–</span> <i>Irvine, California</i></span><span class="date">Aug 2020 – Jan 2022</span></div>
+<div class="title">Graduate Student Researcher</div>
+<p>Conducted research that was <a href="https://mohamadorabi.github.io/MohamadOrabi/#publications">published</a> and <a href="https://mohamadorabi.github.io/MohamadOrabi/#presentations">presented</a> at academic conferences, contributing to advancements in navigation and signal tracking technologies. Key responsibilities included:</p>
+<ul>
+<li>Set up specialized hardware and conducted numerous <b>experiments</b> and extensive <b>data collections</b>.</li>
+<li>Developed <b>specialized software-defined</b> receivers for tracking a variety of signal sources.</li>
+<li>Researched methods to use <b>cellular signals (LTE, 5G)</b> for navigation.</li>
+<li>Researched methods to use <b>low Earth orbit (LEO)</b> satellites for navigation <b>(e.g., Iridium, Orbcomm)</b>.</li>
+<li>Applied <b>machine learning (ML)</b> techniques in tracking filters to improve <b>multipath mitigation</b>, leading to a substantial reduction in signal errors.</li>
+</ul>
+</div>
+
+<div class="entry">
+<div class="row"><span class="org">ASPIN Lab - University of California Irvine <span style="font-weight:normal">–</span> <i>Irvine, California</i></span><span class="date">Jun 2019 – Sep 2019</span></div>
+<div class="title">Research Intern</div>
+<p>Designed and implemented a <b>GPS receiver</b> in <b>C++:</b></p>
+<ul>
+<li>Used <b>multiprocessing</b> to achieve <b>real-time performance</b>.</li>
+<li><b>Acquired</b> and <b>tracked</b> satellite signals from collected IQ samples.</li>
+<li><b>Decoded</b> the <b>navigation message</b>.</li>
+<li><b>Computed</b> the <b>pseudorange, satellite positions</b>, and <b>correction parameters</b>.</li>
+<li><b>Computed</b> a full <b>position-time</b> navigation <b>solution</b>.</li>
+</ul>
+</div>
+</section>
+
+<section id="education" class="edu">
+<h2>Education</h2>
+<div class="entry edu-item">
+<div class="row"><span class="org">University of California <span style="font-weight:normal">–</span> <i>Irvine, California</i></span><span class="date">2020 - 2022</span></div>
+<div class="degree">M.S. in Electrical and Computer Engineering – GPA (3.80)</div>
+<ul>
+<li><b>Research Project:</b> Opportunistic navigation exploiting LTE, 5G, and low Earth Orbit satellite signals.</li>
+<li><b>Best Presentation Award</b> at <b>ION GNSS+ 2021</b> for my reinforcement learning for multipath mitigation work</li>
+</ul>
+</div>
+<div class="entry edu-item">
+<div class="org" style="font-weight:bold">Lebanese American University <span style="font-weight:normal">–</span> <i style="font-weight:normal">Byblos, Lebanon</i></div>
+<div class="row degree"><span>B.E. Electrical Engineering – GPA (3.91)</span><span class="date">2016 - 2020</span></div>
+<ul>
+<li><b>Full Scholarship</b> by the University Scholarship (USP) hosted by the <b>US Embassy</b>.</li>
+</ul>
+</div>
+</section>
+
+<section id="skills">
+<h2>Professional Skills:</h2>
+<p class="intro">This section lists the skills I have acquired during each of my experiences:</p>
+
+<div class="sub">
+<h3>1-&nbsp;&nbsp;&nbsp;Apple</h3>
+<p>This experience taught me to own a feature end to end and to deliver it across multiple teams in a fast-paced environment.</p>
+<p>Main languages used: <b>C++ - Objective-C - Python</b></p>
+<ul>
+  <li><b>End-to-end ML ownership</b>: from data collection and feature design to on-device integration.</li>
+  <li><b>Designing cost functions</b> and architectures around <b>system-level KPIs</b> rather than model loss.</li>
+  <li><b>Optimizing ML models</b> to fit a tight <b>memory and battery budget</b>.</li>
+  <li><b>Cloud training and evaluation pipelines</b> for <b>large-scale experiments</b>.</li>
+  <li><b>Building AI agents</b>: bots, triage skills, and automated reports.</li>
+  <li><b>Evaluating agentic systems</b>.</li>
+  <li><b>Monitoring and alerting</b> systems with daily digests and real-time alerts.</li>
+  <li><b>Cross-team collaboration</b> with test and firmware teams.</li>
+  <li><b>AI-assisted development</b> workflows and teaching them to others.</li>
+</ul>
+</div>
+
+<div class="sub">
+<h3>2-&nbsp;&nbsp;&nbsp;OneNav, Inc.</h3>
+<p>This experience helped me gain industry-level coding skills necessary for collaboration on large projects.</p>
+<p>Main languages used: <b>Java - C++ - Python</b></p>
+<ul>
+<li><b>Docker</b> for creating isolated, reproducible, and scalable <b>development environments</b>.</li>
+<li><b>YAML scripting</b> for build and test <b>automation (CI/CD)</b>.</li>
+<li><b>Code testing</b> and quality assurance for <b>reliability and performance</b>.</li>
+<li><b>Training ML</b> for resource constraint devices optimizing for <b>performance, latency, and size</b>.</li>
+<li><b>Deploying ML</b> on resource constraint devices using <b>TensorFlow Lite for Microcontrollers</b>.</li>
+<li>Building <b>interactive dashboards</b> for massive data analysis.</li>
+<li><b>Multiprocessing</b> to speed up processing of <b>massive data.</b></li>
+</ul>
+</div>
+
+<div class="sub">
+<h3>3-&nbsp;&nbsp;&nbsp;ASPIN Lab</h3>
+<p>This experience laid the foundational theoretical and mathematical frameworks crucial to my career.</p>
+<p>Main languages used: <b>Matlab - C++ - Python</b></p>
+<ul>
+<li>Comprehensive understanding of <b>Linear Algebra</b>, <b>Estimation Theory</b>, <b>Probability</b>, and <b>Stochastic Processes</b>.</li>
+<li>Theoretical and practical understanding of <b>Kalman Filtering</b> and <b>Sensor Fusion</b>.</li>
+<li>Deep understanding of <b>GNSS theory and design choices</b>: PRN gold codes, spread spectrum signaling, code and phase tracking, navigation message, pseudorange models, and error sources.</li>
+<li>In-depth knowledge of <b>machine learning</b> theory and techniques: supervised, unsupervised, and reinforcement learning.</li>
+<li>Familiarity with <b>cellular standards (LTE, 5G)</b>, specifically synchronization signals.</li>
+<li>Familiarity with <b>Low Earth Orbit (LEO) satellite signals</b>, namely Orbcomm and Iridium.</li>
+</ul>
+</div>
+
+<div class="sub">
+<h3>4-Personal Projects</h3>
+<p>Includes everything from games to utility scripts, message spammers, data scrapers, and even an augmented reality (AR) function visualizer.</p>
+<p>Main languages used: <b>Python - Matlab - C++ - C# - HTML - JavaScript - Swift</b></p>
+<ul>
+<li>Great <b>problem-solving</b> skills and a <b>can-do attitude</b>.</li>
+<li>Exceptional <b>debugging skills</b> and proficiency in <b>debugging tools</b> and techniques.</li>
+<li><b>Quickly learning</b> new skills, programming languages, libraries, etc.</li>
+<li><b>Swift</b> for iOS development.</li>
+<li><b>Unity</b> for 3D games and physics simulations.</li>
+<li><b>Image processing</b> and filtering.</li>
+<li><b>HTML</b> for websites.</li>
+<li><b>Intuitive UI</b> design.</li>
+</ul>
+</div>
+</section>
+
+<section id="publications">
+<h2>Publications</h2>
+<ul class="pubs">
+<li class="pub">A Machine Learning Multipath Mitigation Approach for Opportunistic Navigation with 5G Signals<i>First Author - ION GNSS+ - September 2021 - St. Louis, Missouri</i></li>
+<li class="pub">Opportunistic Navigation with Doppler Measurements from Iridium Next and Orbcomm LEO Satellites<i>First Author - IEEE Aerospace - April 2021 – Virtual</i></li>
+<li class="pub">Iterative Learning Control: Practical Implementation and Automation<i>Co-Author - IEEE Transactions on Industrial Electronics - March 2021</i></li>
+<li class="pub">Carpe Signum: Seize the Signal<i>Co-Author - Inside GNSS Magazine - February 2021</i></li>
+<li class="pub">A Machine Learning Approach for GPS Code Phase Estimation in Multipath Environments<i>First Author -&nbsp; IEEE/ION Position Location and Navigation Symposium PLANS - April 2020 – Virtual</i></li>
+</ul>
+</section>
+</body>
+</html>

@@ -3,7 +3,7 @@
 body {
   @include body-font;
   padding-top: 54px;
-  color: $gray-600;
+  color: $gray-700;
 }
 @media (min-width: 992px) {
   body {
@@ -25,8 +25,8 @@ h6 {
 }
 
 h1 {
-  font-size: 6rem;
-  line-height: 5.5rem;
+  font-size: clamp(3rem, 13vw, 6rem);
+  line-height: 0.92;
 }
 
 h2 {

@@ -3,10 +3,21 @@
     font-weight: 800;
     letter-spacing: 0.05rem;
     text-transform: uppercase;
+    color: rgba($white, 0.85);
+    &:hover,
+    &:focus {
+      color: $white;
+    }
+    &.active {
+      color: $white;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 0.35em;
+    }
   }
   .navbar-toggler {
     &:focus {
-      outline-color: lighten($primary, 15%);
+      outline-color: $primary-light;
     }
   }
 }

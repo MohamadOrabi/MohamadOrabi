@@ -25,4 +25,14 @@
     target: '#sideNav'
   });
 
+  // The last section is shorter than the viewport, so the page bottoms out before
+  // it reaches the top and the scrollspy never selects it. Highlight it at the bottom.
+  $(window).on('scroll', function() {
+    var spy = $('body').data('bs.scrollspy');
+    if (!spy || !spy._targets.length) return;
+    if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 2) {
+      spy._activate(spy._targets[spy._targets.length - 1]);
+    }
+  });
+
 })(jQuery); // End of use strict

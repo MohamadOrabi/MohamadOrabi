@@ -5,9 +5,9 @@
  */
 
 body {
-  font-family: 'Muli', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-family: "Muli", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   padding-top: 54px;
-  color: #868e96;
+  color: #495057;
 }
 
 @media (min-width: 992px) {
@@ -16,22 +16,21 @@ body {
     padding-left: 17rem;
   }
 }
-
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-family: 'Saira Extra Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-family: "Saira Extra Condensed", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 700;
   text-transform: uppercase;
   color: #343a40;
 }
 
 h1 {
-  font-size: 6rem;
-  line-height: 5.5rem;
+  font-size: clamp(3rem, 13vw, 6rem);
+  line-height: 0.92;
 }
 
 h2 {
@@ -50,7 +49,7 @@ p.lead {
 .subheading {
   text-transform: uppercase;
   font-weight: 500;
-  font-family: 'Saira Extra Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-family: "Saira Extra Condensed", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1.5rem;
 }
 
@@ -66,11 +65,9 @@ p.lead {
   line-height: 3.5rem;
   margin-right: 1rem;
 }
-
 .social-icons a:last-child {
   margin-right: 0;
 }
-
 .social-icons a:hover {
   background-color: #BD5D38;
 }
@@ -78,7 +75,6 @@ p.lead {
 .dev-icons {
   font-size: 3rem;
 }
-
 .dev-icons .list-inline-item i:hover {
   color: #BD5D38;
 }
@@ -87,8 +83,17 @@ p.lead {
   font-weight: 800;
   letter-spacing: 0.05rem;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
 }
-
+#sideNav .navbar-nav .nav-item .nav-link:hover, #sideNav .navbar-nav .nav-item .nav-link:focus {
+  color: #fff;
+}
+#sideNav .navbar-nav .nav-item .nav-link.active {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+}
 #sideNav .navbar-toggler:focus {
   outline-color: #d48a6e;
 }
@@ -104,8 +109,8 @@ p.lead {
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
     width: 17rem;
     height: 100vh;
   }
@@ -126,19 +131,19 @@ p.lead {
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: flex-start;
+        -ms-flex-align: start;
+            align-items: flex-start;
     -webkit-box-flex: 0;
-    -ms-flex-positive: 0;
-    flex-grow: 0;
+        -ms-flex-positive: 0;
+            flex-grow: 0;
     width: 100%;
     margin-bottom: auto;
   }
   #sideNav .navbar-collapse .navbar-nav {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
     width: 100%;
   }
   #sideNav .navbar-collapse .navbar-nav .nav-item {
@@ -148,33 +153,28 @@ p.lead {
     display: block;
   }
 }
-
 section.resume-section {
-  padding-top: 5rem !important;
-  padding-bottom: 5rem !important;
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
   max-width: 75rem;
 }
-
-section.resume-section .resume-item .resume-date {
-  min-width: none;
-}
-
 @media (min-width: 768px) {
   section.resume-section {
-    min-height: 100vh;
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+  section.resume-section .resume-item .resume-content {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    min-width: 0;
   }
   section.resume-section .resume-item .resume-date {
-    min-width: 18rem;
+    min-width: 10rem;
+    margin-left: 1.5rem;
+    white-space: nowrap;
   }
 }
-
-@media (min-width: 992px) {
-  section.resume-section {
-    padding-top: 3rem !important;
-    padding-bottom: 3rem !important;
-  }
-}
-
 .bg-primary {
   background-color: #BD5D38 !important;
 }
@@ -183,10 +183,112 @@ section.resume-section .resume-item .resume-date {
   color: #BD5D38 !important;
 }
 
-a {
-  color: #BD5D38;
+.resume-date .text-primary {
+  color: #A9502E !important;
 }
 
+a {
+  color: #A9502E;
+}
 a:hover, a:focus, a:active {
-  color: #824027;
+  color: #8A4125;
+}
+
+#skyplotPlotly {
+  width: 100%;
+  max-width: 640px;
+  min-height: 320px;
+}
+#skyplotPlotly .plot-loading {
+  margin: 0;
+  padding: 6rem 0;
+  text-align: center;
+  color: #868e96;
+}
+
+.game-controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 1rem;
+}
+.game-controls > * {
+  margin-right: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.game-controls .game-controls-difficulty {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.game-controls .game-controls-difficulty label {
+  margin: 0 0.5rem 0 0;
+}
+.game-controls .game-controls-difficulty .custom-select {
+  width: auto;
+}
+.game-controls .game-controls-buttons {
+  margin-right: 0;
+}
+.game-controls .game-controls-buttons .btn + .btn {
+  margin-left: 0.5rem;
+}
+.game-controls .btn-primary {
+  background-color: #A9502E;
+  border-color: #A9502E;
+}
+.game-controls .btn-primary:hover, .game-controls .btn-primary:focus, .game-controls .btn-primary:active {
+  background-color: #8A4125;
+  border-color: #8A4125;
+}
+.game-controls .btn-primary:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(189, 93, 56, 0.4);
+          box-shadow: 0 0 0 0.2rem rgba(189, 93, 56, 0.4);
+}
+.game-controls .btn-outline-secondary {
+  color: #495057;
+  border-color: #495057;
+}
+.game-controls .btn-outline-secondary:hover, .game-controls .btn-outline-secondary:focus, .game-controls .btn-outline-secondary:active {
+  background-color: #495057;
+  border-color: #495057;
+  color: #fff;
+}
+.game-controls .btn-outline-secondary:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(73, 80, 87, 0.3);
+          box-shadow: 0 0 0 0.2rem rgba(73, 80, 87, 0.3);
+}
+.game-controls .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: #A9502E;
+  border-color: #A9502E;
+}
+.game-controls .custom-control-input:focus ~ .custom-control-label::before {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(189, 93, 56, 0.3);
+          box-shadow: 0 0 0 0.2rem rgba(189, 93, 56, 0.3);
+}
+.game-controls .custom-select:focus {
+  border-color: #BD5D38;
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(189, 93, 56, 0.3);
+          box-shadow: 0 0 0 0.2rem rgba(189, 93, 56, 0.3);
+}
+
+#gameResult {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid #BD5D38;
+  background-color: #FAF6F3;
+}
+#gameResult p:last-child {
+  margin-bottom: 0;
+}
+#gameResult:empty {
+  display: none;
 }
