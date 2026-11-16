@@ -57,10 +57,16 @@
           <a class="nav-link js-scroll-trigger" href="#presentations">Presentations</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="#outlierDetectionGame">Just for Fun</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="#dashboardDemo">Dashboard Demo</a>
+          <a class="nav-link" href="#" id="justForFunToggle" role="button" aria-expanded="false"
+            aria-controls="justForFunLinks">Just for Fun</a>
+          <ul id="justForFunLinks" class="collapse navbar-nav sub-nav">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#outlierDetectionGame">Outlier Detection Game</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#dashboardDemo">Dashboard Demo</a>
+            </li>
+          </ul>
         </li>
       </ul>
     </div>
@@ -120,7 +126,7 @@
             <h3 class="mb-0">Software Engineering Systems</h3>
             <div class="subheading mb-3">Apple - Location &amp; Sensing Technologies</div>
             <p>Owned the <b>full lifecycle</b> of an <b>on-device ML model</b> that predicts <b>measurement errors</b>, improving <b>tail positioning error (HE95)</b> by <b>60%</b> with <b>barely any impact on memory or battery life</b> and helping beat competitors for <b>best-in-class fitness performance</b>. The worst 75% of data collections now beat what used to be the best 25%. This work earned me the <b>special award bonus</b> at my end-of-year review. My activities included but were not limited to:</p>
-            <ul class="mb-3">
+            <ul class="mb-4">
               <li>Iterating on <b>feature preprocessing</b>, <b>cost function</b>, <b>architecture</b>, <b>system integration</b>, and <b>resource optimization</b>.</li>
               <li>Coordinating <b>data collection campaigns</b> with the test team.</li>
               <li>Working with the <b>firmware team</b> to find useful signals and pass them up the stack as <b>model features</b>.</li>
@@ -128,7 +134,7 @@
               <li>Running <b>massive experiments</b> to guide every design decision.</li>
             </ul>
             <p>Revamped the <b>ephemeris monitoring system</b>, cutting the time to notice test failures from <b>months</b> to <b>15 minutes</b>, with <b>95%</b> handled the <b>same day</b>:</p>
-            <ul class="mb-3">
+            <ul class="mb-4">
               <li>Building an <b>AI Slack bot</b> that sends <b>daily digests</b> of new, ongoing, and cleared issues.</li>
               <li>Sending <b>real-time alerts</b> with an initial <b>triage report</b> and recommended <b>next steps</b>.</li>
               <li>Drastically increasing <b>test coverage</b>.</li>
@@ -141,6 +147,7 @@
               <li>Driving the <b>LLDB debugger</b> for <b>triage and investigation</b>.</li>
               <li>Contributing to the <b>agentic bug-triage system</b>: fixing a <b>validation data leak</b> and mining historical bugs for <b>triage skills</b>.</li>
               <li>Serving as a <b>GenAI ambassador</b> after being nominated for Apple's <b>agentic AI coding course</b>.</li>
+              <li>Helping conduct <b>phone screens</b> and <b>agentic coding assessments</b> for candidates.</li>
             </ul>
           </div>
           <div class="resume-date text-md-right">

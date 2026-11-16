@@ -3,7 +3,12 @@ section.resume-section {
   padding-bottom: 3rem !important;
   max-width: 75rem;
   .resume-item {
-    .resume-content {}
+    .resume-content {
+      // keep each lead sentence close to the list it introduces
+      p {
+        margin-bottom: 0.35rem;
+      }
+    }
   }
 }
 @media (min-width: 768px) {

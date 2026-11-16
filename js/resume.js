@@ -35,4 +35,34 @@
     }
   });
 
+  // "Just for Fun" sub-menu: opens when its link is clicked, and stays open while one
+  // of its sections (the game or the dashboard demo) is on screen.
+  var $funToggle = $('#justForFunToggle');
+  var $funLinks = $('#justForFunLinks');
+  var funPinned = false;
+  var funInView = false;
+
+  function syncFunMenu() {
+    var open = funPinned || funInView;
+    $funToggle.attr('aria-expanded', open).toggleClass('active', funInView);
+    if ($funLinks.hasClass('collapsing')) return; // re-synced when the transition ends
+    if ($funLinks.hasClass('show') !== open) {
+      $funLinks.collapse(open ? 'show' : 'hide');
+    }
+  }
+
+  $funLinks.collapse({ toggle: false }).on('shown.bs.collapse hidden.bs.collapse', syncFunMenu);
+
+  $funToggle.on('click', function(e) {
+    e.preventDefault();
+    funPinned = !funPinned;
+    syncFunMenu();
+  });
+
+  $(window).on('activate.bs.scrollspy', function(e, data) {
+    var target = (data && data.relatedTarget) || e.relatedTarget;
+    funInView = $funLinks.find('[href="' + target + '"]').length > 0;
+    syncFunMenu();
+  });
+
 })(jQuery); // End of use strict

@@ -94,6 +94,15 @@ p.lead {
   text-decoration-thickness: 2px;
   text-underline-offset: 0.35em;
 }
+#sideNav .navbar-nav .sub-nav {
+  padding-left: 1rem;
+}
+#sideNav .navbar-nav .sub-nav .nav-item .nav-link {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
 #sideNav .navbar-toggler:focus {
   outline-color: #d48a6e;
 }
@@ -146,6 +155,9 @@ p.lead {
             flex-direction: column;
     width: 100%;
   }
+  #sideNav .navbar-collapse .navbar-nav.sub-nav {
+    padding-left: 0;
+  }
   #sideNav .navbar-collapse .navbar-nav .nav-item {
     display: block;
   }
@@ -158,6 +170,10 @@ section.resume-section {
   padding-bottom: 3rem !important;
   max-width: 75rem;
 }
+section.resume-section .resume-item .resume-content p {
+  margin-bottom: 0.35rem;
+}
+
 @media (min-width: 768px) {
   section.resume-section {
     padding-top: 4rem !important;
