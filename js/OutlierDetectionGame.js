@@ -308,9 +308,9 @@ document.addEventListener("DOMContentLoaded", function () {
             residual: sat.residual
         })));
     
-        plotSkyplot();
+        userGuesses.clear(); // Clear before plotting so no selection ring carries over
         document.getElementById("gameResult").innerHTML = ""; // Clear result text
-        userGuesses.clear();
+        plotSkyplot();
     }
 
     document.getElementById("resetGame").addEventListener("click", () => {
