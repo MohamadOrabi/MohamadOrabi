@@ -1,27 +1,30 @@
 section.resume-section {
-  padding-top: 5rem !important;
-  padding-bottom: 5rem !important;
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
   max-width: 75rem;
   .resume-item {
-    .resume-content {}
-    .resume-date {
-      min-width: none;
+    .resume-content {
+      // keep each lead sentence close to the list it introduces
+      p {
+        margin-bottom: 0.35rem;
+      }
     }
   }
 }
 @media (min-width: 768px) {
   section.resume-section {
-    min-height: 100vh;
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
     .resume-item {
+      .resume-content {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
       .resume-date {
-        min-width: 18rem;
+        min-width: 10rem;
+        margin-left: 1.5rem;
+        white-space: nowrap;
       }
     }
-  }
-}
-@media (min-width: 992px) {
-  section.resume-section {
-    padding-top: 3rem !important;
-    padding-bottom: 3rem !important;
   }
 }

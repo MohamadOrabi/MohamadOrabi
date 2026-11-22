@@ -3,10 +3,30 @@
     font-weight: 800;
     letter-spacing: 0.05rem;
     text-transform: uppercase;
+    color: rgba($white, 0.85);
+    &:hover,
+    &:focus {
+      color: $white;
+    }
+    &.active {
+      color: $white;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 0.35em;
+    }
+  }
+  .navbar-nav .sub-nav {
+    padding-left: 1rem;
+    .nav-item .nav-link {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+    }
   }
   .navbar-toggler {
     &:focus {
-      outline-color: lighten($primary, 15%);
+      outline-color: $primary-light;
     }
   }
 }
@@ -45,6 +65,9 @@
         flex-direction: column;
 
         width: 100%;
+        &.sub-nav {
+          padding-left: 0;
+        }
         .nav-item {
           display: block;
           .nav-link {

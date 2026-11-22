@@ -1,0 +1,92 @@
+// Outlier detection game (Just for Fun section)
+
+#skyplotPlotly {
+  width: 100%;
+  max-width: 640px;
+  min-height: 320px;
+  .plot-loading {
+    margin: 0;
+    padding: 6rem 0;
+    text-align: center;
+    color: $gray-600;
+  }
+}
+
+.game-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+  > * {
+    margin-right: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .game-controls-difficulty {
+    display: flex;
+    align-items: center;
+    label {
+      margin: 0 0.5rem 0 0;
+    }
+    .custom-select {
+      width: auto;
+    }
+  }
+  .game-controls-buttons {
+    margin-right: 0;
+    .btn + .btn {
+      margin-left: 0.5rem;
+    }
+  }
+  // Bootstrap's own palette is blue; keep the controls in the site's rust
+  .btn-primary {
+    background-color: $primary-text;
+    border-color: $primary-text;
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $primary-text-hover;
+      border-color: $primary-text-hover;
+    }
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba($primary, 0.4);
+    }
+  }
+  .btn-outline-secondary {
+    color: $gray-700;
+    border-color: $gray-700;
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: $gray-700;
+      border-color: $gray-700;
+      color: $white;
+    }
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba($gray-700, 0.3);
+    }
+  }
+  .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: $primary-text;
+    border-color: $primary-text;
+  }
+  .custom-control-input:focus ~ .custom-control-label::before {
+    box-shadow: 0 0 0 0.2rem rgba($primary, 0.3);
+  }
+  .custom-select:focus {
+    border-color: $primary;
+    box-shadow: 0 0 0 0.2rem rgba($primary, 0.3);
+  }
+}
+
+#gameResult {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid $primary;
+  background-color: #FAF6F3;
+  p:last-child {
+    margin-bottom: 0;
+  }
+  &:empty {
+    display: none;
+  }
+}
